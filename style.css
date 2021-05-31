@@ -1,0 +1,149 @@
+* {
+  box-sizing: border-box;
+}
+
+body {
+  font-family: Lato;
+}
+
+.hidden {
+  display: none !important;
+}
+
+#app {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 20px;
+  height: 100vh;
+}
+
+table {
+  border: 1px solid #ccc;
+  padding: 0.5rem;
+  box-shadow: 0 0 5px #ccc;
+  width: 100%;
+  margin: 0 auto;
+}
+table tr th {
+  text-align: left;
+}
+
+table tr td:not(:last-child) {
+  border: 2px solid #ccc;
+  padding: 10px 5px;
+  transition: all 0.25s;
+}
+table tr.editing {
+  color: blue;
+}
+table tr.editing td:not(:last-child) {
+  border-color: blue;
+}
+
+table tr button.btn-action {
+  border: none;
+  background-color: transparent;
+  cursor: pointer;
+}
+
+table tr button.btn-action:disabled {
+  cursor: not-allowed;
+}
+
+form {
+  width: 70%;
+  margin: 0 auto;
+  border: 1px solid blue;
+  padding: 0.5rem;
+  /* border-radius: 10px; */
+  /* margin: 2rem auto; */
+  box-shadow: 0 0 5px lightskyblue;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  grid-gap: 0.5rem;
+  grid-auto-rows: minmax(50px, 50px);
+  grid-template-areas:
+    'nombre nombre apellido apellido'
+    'edad calle calle numero'
+    'boton boton boton boton';
+}
+
+form label,
+form input {
+  display: block;
+  width: 100%;
+}
+form label {
+  font-weight: 700;
+}
+form input {
+  padding: 5px;
+}
+form .nombre {
+  grid-area: nombre;
+}
+form .apellido {
+  grid-area: apellido;
+}
+form .edad {
+  grid-area: edad;
+}
+form .calle {
+  grid-area: calle;
+}
+form .botones {
+  grid-area: boton;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+form .botones .btn {
+  margin: 0 auto;
+  cursor: pointer;
+  border: 1px solid;
+  display: inline-block;
+  width: 30%;
+  padding: 5px 0;
+  border-radius: 0;
+}
+
+form .botones .btn.submit {
+  color: blue;
+  background-color: lightskyblue;
+}
+form .botones .btn.submit:hover {
+  box-shadow: 0 0 5px lightskyblue;
+}
+
+form .botones .btn.cancel {
+  color: red;
+  background-color: lightpink;
+}
+form .botones .btn.cancel:hover {
+  box-shadow: 0 0 5px lightpink;
+}
+
+@media screen and (max-width: 700px) {
+  #app {
+    flex-direction: column-reverse;
+    justify-content: space-between;
+  }
+
+  form {
+    width: 100%;
+  }
+}
+
+@media screen and (max-width: 420px) {
+  form {
+    grid-template-columns: repeat(3, 1fr);
+    grid-template-areas:
+      'nombre nombre nombre'
+      'apellido apellido apellido'
+      'edad edad edad'
+      'calle calle numero'
+      'boton boton boton';
+  }
+}
