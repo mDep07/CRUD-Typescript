@@ -157,7 +157,7 @@ const EditPerson = (id: number) => {
 
     const editRow: HTMLTableRowElement = table.querySelector(`tbody tr[data-id="${id}"]`);
     editRow.classList.add('editing');
-    Array.from(editRow.querySelectorAll('button.btn-action')).forEach(btn => {
+    Array.from(table.querySelectorAll('button.btn-action')).forEach(btn => {
       btn.setAttribute('disabled', 'disabled');
     });
     
