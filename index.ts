@@ -219,7 +219,10 @@ const addEventsActions = (lista: Array<HTMLButtonElement>) => {
       const id = btn.parentElement.parentElement.dataset?.id;
       if(id) {
         if(btn.classList.contains('delete')) {
-          DeletePerson(parseInt(id));
+          let deletePerson = confirm('Esta seguro de eliminar a esta Persona');
+          if(deletePerson) {
+            DeletePerson(parseInt(id));
+          }
           return;
         }
 
