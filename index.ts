@@ -1,18 +1,9 @@
 // Import stylesheets
 import './style.css';
 import 'boxicons';
+import { Persona } from './Models/Persona';
 
-interface Persona {
-  id: number;
-  nombre: string;
-  apellido: string;
-  edad: number;
-  direccion: {
-    calle: string;
-    numero?: number;
-  };
-  telefono?: string;
-}
+
 
 const personas: Array<Persona> = [
   {
