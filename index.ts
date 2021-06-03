@@ -138,6 +138,7 @@ const EditPerson = (id: number) => {
   const numero = form.querySelector<HTMLInputElement>('input[name="numero"]');
 
   const persona: Persona = personas.find(p => p.id === id);
+  console.log({persona})
   if(persona) {
     personId.value = persona.id.toString();
     nombre.value = persona.nombre;
@@ -148,6 +149,7 @@ const EditPerson = (id: number) => {
 
     const editRow: HTMLTableRowElement = table.querySelector(`tbody tr[data-id="${id}"]`);
     editRow.classList.add('editing');
+
     Array.from(table.querySelectorAll('button.btn-action')).forEach(btn => {
       btn.setAttribute('disabled', 'disabled');
     });
@@ -168,25 +170,47 @@ form.addEventListener('submit', e => {
   const edad = form.querySelector<HTMLInputElement>('input[name="edad"]');
   const calle = form.querySelector<HTMLInputElement>('input[name="calle"]');
   const numero = form.querySelector<HTMLInputElement>('input[name="numero"]');
-  console.log(personId.value)
+
+  const persona: Persona = {
+    id: 0,
+    nombre: nombre.value,
+    apellido: apellido.value,
+    edad: parseInt(edad.value),
+    direccion: {
+      calle: calle.value,
+      numero: parseFloat(numero.value)
+    }
+  };
+
   if(parseInt(personId.value) === 0) {
-    const id = personas.sort((a, b) => b.id - a.id)[0].id + 1;
+    persona.id = personas.sort((a, b) => b.id - a.id)[0].id + 1;
 
-    const newPerson: Persona = {
-      id: id,
-      nombre: nombre.value,
-      apellido: apellido.value,
-      edad: parseInt(edad.value),
-      direccion: {
-        calle: calle.value,
-        numero: parseFloat(numero.value)
-      }
-    };
-
-    addNewPerson(newPerson);
+    addNewPerson(persona);
 
   } else {
+    persona.id = parseInt(personId.value);
 
+    const editRow: HTMLTableRowElement = table.querySelector(`tbody tr[data-id="${persona.id}"]`);
+    const newRow: HTMLTableRowElement = document.createElement('tr');
+    newRow.setAttribute('data-id', persona.id.toString());
+    const tableBody: HTMLTableSectionElement = table.querySelector('tbody');
+    newRow.innerHTML = `
+      <td>${persona.nombre} ${persona.apellido}</td>
+      <td>${persona.edad}</td>
+      <td>${persona.direccion.calle} ${persona.direccion.numero || ''}</td>
+      <td>
+        <button class="btn-action edit">
+          <box-icon name='pencil' type='solid' border="square" ></box-icon>
+        </button>
+        <button class="btn-action delete">
+          <box-icon type='solid' name='trash-alt' border="square"></box-icon>
+        </button>
+      </td>
+    `;
+
+    addEventsActions(Array.from(newRow.querySelectorAll('button.btn-action')));
+    tableBody.insertBefore(newRow, editRow.nextElementSibling);
+    tableBody.removeChild(editRow);
   }
 
   form.reset();
