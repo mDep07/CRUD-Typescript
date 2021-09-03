@@ -62,6 +62,12 @@ table.innerHTML = `
   </tbody>
 `;
 
+table.querySelector('tbody').addEventListener('click', manageActions);
+
+function manageActions(this: HTMLElement, e: Event) {
+  console.log({element: this, e}, this.tagName);
+}
+
 const form: HTMLFormElement = document.createElement('form');
 form.innerHTML = `
   <input type="hidden" name="id" value="0" />  
