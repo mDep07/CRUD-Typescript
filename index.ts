@@ -69,40 +69,30 @@ function manageActions(e: Event) {
   const isActionButton = element.tagName === 'BOX-ICON';
 
   const searchRow = (e: HTMLElement) => {
-    console.log(e.tagName)
     if(e.tagName === 'TR'){
       return e
     }
-    
-    searchRow(e.parentElement);
+    return searchRow(e.parentElement);
   }
 
   if(isActionButton) {
     const isDeleteButton = element.parentElement.classList.contains('delete');
     const isEditButton = element.parentElement.classList.contains('edit');
     const rowElement = searchRow(element.parentElement);
-    console.log({rowElement})
+    const id = rowElement.dataset?.id;
 
-    // if(isDeleteButton) {
-    //   const id = rowElement.dataset?.id;
-    //   if(id) {
-    //     let deletePerson = confirm('Esta seguro de eliminar a esta Persona');
-    //     if(deletePerson) {
-    //       DeletePerson(parseInt(id));
-    //     }
-    //     return;
-    //   }
+    if(isDeleteButton && id) {
+      let deletePerson = confirm('Esta seguro de eliminar a esta Persona');
+        if(deletePerson) {
+          DeletePerson(parseInt(id));
+        }
+        return;
+    } 
 
-    // } 
-
-    // if(isEditButton) {
-    //   const id = rowElement.dataset?.id;
-    //   console.log({id});
-    //   if(id) {
-    //     EditPerson(parseInt(id));
-    //     return;
-    //   }
-    // }
+    if(isEditButton && id) {
+      EditPerson(parseInt(id));
+      return;
+    }
 
   }
 }
