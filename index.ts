@@ -1,30 +1,29 @@
 // Import stylesheets
 import './style.css';
 import 'boxicons';
-import { Persona } from './Models/Persona';
+import { IPersona, Persona, getAllPersons } from './Models/Persona';
 
-
-
-const personas: Array<Persona> = [
-  {
-    id: 1,
-    nombre: 'Miguel',
-    apellido: 'Depiante',
-    edad: 26,
-    direccion: {
-      calle: '25 de Mayo'
-    }
-  },
-  {
-    id: 2,
-    nombre: 'Melina',
-    apellido: 'Paez',
-    edad: 27,
-    direccion: {
-      calle: 'Bv. 25 de Mayo'
-    }
-  }
-];
+const personas: Persona[] = getAllPersons();
+// const personas: Array<Persona> = [
+//   {
+//     id: 1,
+//     nombre: 'Miguel',
+//     apellido: 'Depiante',
+//     edad: 26,
+//     direccion: {
+//       calle: '25 de Mayo'
+//     }
+//   },
+//   {
+//     id: 2,
+//     nombre: 'Melina',
+//     apellido: 'Paez',
+//     edad: 27,
+//     direccion: {
+//       calle: 'Bv. 25 de Mayo'
+//     }
+//   }
+// ];
 
 // Write TypeScript code!
 const appDiv: HTMLElement = document.getElementById('app');
@@ -58,7 +57,7 @@ table.innerHTML = `
             </td>
           </tr>
         `;
-      }).toString().replaceAll(',', '')
+      }).join('')
     }
   </tbody>
 `;
@@ -96,7 +95,7 @@ appDiv.appendChild(form);
 appDiv.appendChild(table);
 
 const addNewPerson = (persona: Persona) => {
-  console.log({persona})
+  
   const newRow: HTMLTableRowElement = document.createElement('tr');
   newRow.setAttribute('data-id', persona.id.toString());
   const tableBody: HTMLTableSectionElement = table.querySelector('tbody');
@@ -116,7 +115,7 @@ const addNewPerson = (persona: Persona) => {
 
   addEventsActions(Array.from(newRow.querySelectorAll('button.btn-action')));
   tableBody.appendChild(newRow);
-  personas.push(persona);
+  // personas.push(persona);
 };
 
 const DeletePerson = (id: number) => {
@@ -138,7 +137,7 @@ const EditPerson = (id: number) => {
   const numero = form.querySelector<HTMLInputElement>('input[name="numero"]');
 
   const persona: Persona = personas.find(p => p.id === id);
-  console.log({persona})
+  
   if(persona) {
     personId.value = persona.id.toString();
     nombre.value = persona.nombre;
@@ -171,8 +170,9 @@ form.addEventListener('submit', e => {
   const calle = form.querySelector<HTMLInputElement>('input[name="calle"]');
   const numero = form.querySelector<HTMLInputElement>('input[name="numero"]');
 
-  const persona: Persona = {
-    id: 0,
+
+  const persona: IPersona = {
+    id: parseInt(personId.value),
     nombre: nombre.value,
     apellido: apellido.value,
     edad: parseInt(edad.value),
@@ -182,22 +182,23 @@ form.addEventListener('submit', e => {
     }
   };
 
-  if(parseInt(personId.value) === 0) {
-    persona.id = personas.sort((a, b) => b.id - a.id)[0].id + 1;
+  const newPerson = new Persona(persona);
 
-    addNewPerson(persona);
+  if(newPerson.id === 0) {
+    //persona.id = personas.sort((a, b) => b.id - a.id)[0].id + 1;
+    addNewPerson(newPerson);
 
   } else {
-    persona.id = parseInt(personId.value);
+    // persona.id = parseInt(personId.value);
 
-    const editRow: HTMLTableRowElement = table.querySelector(`tbody tr[data-id="${persona.id}"]`);
+    const editRow: HTMLTableRowElement = table.querySelector(`tbody tr[data-id="${newPerson.id}"]`);
     const newRow: HTMLTableRowElement = document.createElement('tr');
-    newRow.setAttribute('data-id', persona.id.toString());
+    newRow.setAttribute('data-id', newPerson.id.toString());
     const tableBody: HTMLTableSectionElement = table.querySelector('tbody');
     newRow.innerHTML = `
-      <td>${persona.nombre} ${persona.apellido}</td>
-      <td>${persona.edad}</td>
-      <td>${persona.direccion.calle} ${persona.direccion.numero || ''}</td>
+      <td>${newPerson.nombre} ${newPerson.apellido}</td>
+      <td>${newPerson.edad}</td>
+      <td>${newPerson.direccion.calle} ${newPerson.direccion.numero || ''}</td>
       <td>
         <button class="btn-action edit">
           <box-icon name='pencil' type='solid' border="square" ></box-icon>
