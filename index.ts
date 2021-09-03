@@ -64,8 +64,47 @@ table.innerHTML = `
 
 table.querySelector('tbody').addEventListener('click', manageActions);
 
-function manageActions(this: HTMLElement, e: Event) {
-  console.log({element: this, e}, this.tagName);
+function manageActions(e: Event) {
+  const element = <HTMLElement>e.target;
+  const isActionButton = element.tagName === 'BOX-ICON';
+
+  const searchRow = (e: HTMLElement) => {
+    console.log(e.tagName)
+    if(e.tagName === 'TR'){
+      return e
+    }
+    
+    searchRow(e.parentElement);
+  }
+
+  if(isActionButton) {
+    const isDeleteButton = element.parentElement.classList.contains('delete');
+    const isEditButton = element.parentElement.classList.contains('edit');
+    const rowElement = searchRow(element.parentElement);
+    console.log({rowElement})
+
+    // if(isDeleteButton) {
+    //   const id = rowElement.dataset?.id;
+    //   if(id) {
+    //     let deletePerson = confirm('Esta seguro de eliminar a esta Persona');
+    //     if(deletePerson) {
+    //       DeletePerson(parseInt(id));
+    //     }
+    //     return;
+    //   }
+
+    // } 
+
+    // if(isEditButton) {
+    //   const id = rowElement.dataset?.id;
+    //   console.log({id});
+    //   if(id) {
+    //     EditPerson(parseInt(id));
+    //     return;
+    //   }
+    // }
+
+  }
 }
 
 const form: HTMLFormElement = document.createElement('form');
@@ -119,7 +158,7 @@ const addNewPerson = (persona: Persona) => {
     </td>
   `;
 
-  addEventsActions(Array.from(newRow.querySelectorAll('button.btn-action')));
+  //addEventsActions(Array.from(newRow.querySelectorAll('button.btn-action')));
   tableBody.appendChild(newRow);
   // personas.push(persona);
 };
@@ -215,7 +254,7 @@ form.addEventListener('submit', e => {
       </td>
     `;
 
-    addEventsActions(Array.from(newRow.querySelectorAll('button.btn-action')));
+    //addEventsActions(Array.from(newRow.querySelectorAll('button.btn-action')));
     tableBody.insertBefore(newRow, editRow.nextElementSibling);
     tableBody.removeChild(editRow);
   }
@@ -258,4 +297,4 @@ const addEventsActions = (lista: Array<HTMLButtonElement>) => {
 }
 
 
-addEventsActions(Array.from(document.querySelectorAll('button.btn-action')));
+//addEventsActions(Array.from(document.querySelectorAll('button.btn-action')));
